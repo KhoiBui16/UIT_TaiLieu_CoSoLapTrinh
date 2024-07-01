@@ -1,0 +1,203 @@
+Mid-term: 1,2,3,4
+Final-term: 5,6,7,8,9
+
+Chapter 1:
+    
+    - Hardware-manager program. 
+    - Giúp người dùng sử dụng hệ thống. 
+    - User: people, account... 
+    - Hardware: tài nguyên hữu hình and vô hình. 
+    - Application program: giải quyết bài toán.
+    - *Chức năng chính: 6. 
+
+    - Phân loại máy tính: 6. 
+
+        - PC: portable computer. 
+        - Server: máy cung cấp dịch vụ, lớn, mạnh. 
+        - PDA: personal digital accessory. 
+        - Fablet: combination giữa laptop and tablet. 
+        - RTOS: real-time operating system. 
+
+    - Phân loại xử lí: 5. 
+
+        - Uniprogramming OS (đơn chương): không cần hệ điều hành. 
+            - Trước uniprogramming: batch system (xử lí theo lô). 
+            - Hardware. 
+        - Multiprogramming OS (đa chương): cần hệ điều hành. 
+            - Software. 
+            - OS ra đời. 
+        - Multitasking vs Multiprogramming: task tương tác người dùng. 
+        - Timeshare(Lập lịch cho CPU): multitasking. 
+        - Phân tán: cơ sở dữ liệu phân tán, chung, phân tán, kết hợp thay đổi từng thời điểm 1. 
+        - Oracle: nổi tiếng về phân tán. 
+        - Nhúng realtime: mang tính điều khiển. 
+        - *Spooling: hàng đợi. 
+
+    - 3 phần chính: CPU, disk (SUB MEMORY), MEMORY. 
+    - Program(disk) load vào MEMORY: job. 
+    - job tương tác với user: task. 
+    - Sercurity: bảo vệ ngoài. 
+    - Protection: đảm bảo an ninh nội bộ. 
+    - CPU không trực tiếp quản lí. 
+    - Hard real-time and Soft real-time. 
+    - OS giữa user-program. 
+
+    - operater(Thao tác đơn) -> script(xử lí theo lô) -> program. 
+    - Timeshare quan trọng nhất. 
+
+Chapter 2:
+
+    - Omnibus: các thành phần nối với bus chung. 
+    - Secondary-memory: đĩa cứng. 
+    
+    - Mô hình máy tính:
+
+        CPU--------------MEMORY-----------------IO
+                            |
+                            |
+                    Secondary MEMORY
+
+    - RAM: 
+
+        - ROM(Read only memory). 
+        - RAM(Read and write memory). 
+        - *Hybrid(combined of 2): lưu vĩnh viễn + thay đổi dữ liệu. 
+            NVRAM.
+
+    - Càng dễ dùng càng yếu bảo mật. 
+
+    - Processing:
+
+        - Programm. 
+        - Main memory. 
+        - Dispath CPU(cấp phát). 
+    
+    - Program and Process. 
+
+        - Program sẽ thành Process. 
+        - Second vs main memory. 
+        - Không cấp phát và cấp phát CPU. 
+
+    - HDD đọc theo BLOCK. 
+    - FLASH MEMORY không bền. 
+    - REGISTER và MEMORY đều là RAM(Ramdom Access memory). 
+
+        - Giải quyết tắc nghẽn cỗ chai. 
+        - DRAM: 1 transitor / SRAM: 6 transitor. 
+        - REGISTER: SR, CACHE: SR, MAIN MEMORY: DR. 
+
+    - Online: 6 above, Offline: 2 under. 
+    - Accounting: lưu lịch sử hệ thống, dùng càng lâu file nhật ký càng nhiều. 
+
+    - SYSTEM CALL:
+
+        - USER / KERNEL. 
+        - USER -(SYSTEM CALL)> OS(KERNEL) -> USER. 
+        - Phần không cần đưa vào main mem -> SYSTEM PROGRAM. 
+
+.            USER:
+                                USER PROGRAM <-------------
+                                    |                      |
+                                    |                      |
+OS----------KERNEL(MAIN MEM):       |                      |
+|                                (SYSTEM CALL)---------(return result to user)
+|
+|
+(SYSTEM PROGRAM) k dc load vào main mem -> SECONDARY MEM               
+
+    - BIOS: Basic input output systemProce.
+
+
+Chapter 5:
+
+    - Semaphore: value, link list, tránh busy waiting.
+        - Block: waiting.
+        - Wakeup: from queue to block.
+        - 2 tác vụ: wait giảm value nhỏ hơn 0 thì block, signal tăng value âm thì wakeup.
+        - Automic: đơn nguyên.
+        - Cost: chấp nhận dc.
+        - Dù tránh busy waiting thì vẫn dính.
+        - Wait: tranh giành resource, signal ngược lại.
+
+*    - Bài toán đồng hành (conquerence): bài 8
+
+            P1 -> P5 (S1)
+            |
+            -----------(S2)
+                        |
+            P2 -> P3(S3)---------(S5) 
+                |(S4)   |         |
+               -> P4 -> P6(S6) -> P7(S7)
+
+            S1.value = S2.value = ... = S7.value = 0
+            semaphore: s1, ..., s7
+
+            P1: signal(s1, s2)
+            P2: signal(s3, s4)
+            P3: signal(s5), wait(s3)
+            P4: signal(s6), wait(s4)
+            P5: wait(s1)
+            P6: wait(s2, s6), signal(s7)
+            P7: wait(s5, s7)
+
+Chapter 6:
+
+    - Mutex.
+    - Process vừa hold vừa wait.
+    - Non preemtive.
+    - Chu trình đợi
+    - Thiếu 1/4 điều kiện, k xảy ra deadlock.
+    - RGA.
+    - K chứa chu trình, k deadlock.
+    - Ưu tiên cao, chạy trước.
+
+Chapter 7:
+
+    - Best fit: vừa nhỏ nhất.
+    - Worst fit: vừa lớn nhất.
+    - First fit: cái đầu tiên từ đầu.
+    - Next fit: cái đầu tiên từ vị trí cấp phát cuối.
+    - Phân trang: logic -> physic.
+        - Instuction to Ram.
+        - Băm bằng nhau: phân trang, k bằng nhau: phân đoạn.
+
+    - Page table nằm ở cache và bộ nhớ chính.
+
+Chapter 8:
+
+    - Swap in từ bộ nhớ phụ sang bộ nhớ chính.
+    - Phân trang đều, phân đoạn không đều.
+    - 3 ưu điểm *.
+    - File page.sys trong windows.
+    - Hiểu sơ đồ.
+        Từ bộ nhớ phụ, tham chiếu vào page table.
+        
+    - Tránh lỗi trang để chạy nhanh.
+
+2021-2022
+
+Monitor
+Chuỗi an toàn
+Best fit, next fit, worse fit
+Khung trang
+Bài tập semaphore
+Bài tập về chuỗi an toàn
+Đồ thị cấp phát tài nguyên
+Sleep and wake up
+TLB
+Thay thế trang
+1010101011011101
+Ngăn deadlock: chỉ cần 1 điều kiện xảy ra,
+Tránh deadlock: cần đầy đủ thông tin tiến trình
+Bỏ qua: chấp nhận deadlock xảy ra
+Critical region: nhiều đoạn code hợp lại
+Sleep and wakeup cần hệ điều hành hổ trợ
+Binary semaphore có 2 giá trị, counting semaphore có nhiều giá trị
+Đồ thị wait for chỉ có các tiến trình
+Đồ thị cấp phát tài nguyên: có hướng, cạnh yêu cầu cạnh cấp phát, tiến trình và loại tài nguyên 
+Không gian địa chỉ ảo 32 bit, 4KB kích thước trang: 12 bit offset, 20bit page number
+Kích thước mỗi mục (entry): 2MB = 2^21, 2^(21-20) = 2 byte = 16 bit   
+Chiều semaphore: signal -> wait
+Effective memory reference time = EAT
+Đồ thị có chu trình thì có deadlock
+Available = available + allocation (nếu need nhỏ hơn available)

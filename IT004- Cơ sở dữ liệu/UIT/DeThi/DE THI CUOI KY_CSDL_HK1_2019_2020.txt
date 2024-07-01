@@ -1,0 +1,167 @@
+
+
+Đề 1:
+1.1)
+-- Bối cảnh: Thevanhoi, Noidungthi, Thamgia
+-- Nội dung: 
+ V tvh thuộc Thevanhoi,
+ V nd thuộc Noidungthi: COUNT(tg thuộc Thamgia: 
+				ndt.MaNDT = tg.MaNDT ^ tvh.MaTVH = tg.MaTVH
+				^ tg.HuyChuong = 1)(HuyChuong) = 1
+-- Bảng tầm ảnh hưởng:
+            Thêm      Xóa     Sửa
+Thevanhoi     -        -       -(*)  
+Noidungthi    -        -       -(*)
+Thamgia       +        -       +(HuyChuong)
+
+1.2)
+a) select Hoten, NgSInh, GioiTinh from Vandongvien where QuocTich = 'UK' order by HoTen asc
+b) select * from Vandongvien vdv join Thamgia tg on vdv.MaVDV = tg.MaVDV 
+		join Noidungthi ndt on ndt.MaNDT = tg.MaNDT
+		where TenNDT = 'Ban Cung' and TenTVH = 'Olympic Tokyo 2020'
+c) select count(HuyChuong) from Thamgia tg join Vandongvien vdv on tg.MaVDV = vdv.MaVDV
+		 		join Thevanhoi tvh on tvh.MaTVH = tg.MaTVH
+				where QuocTich = 'Nhat Ban' and HuyChuong = 1
+d) (select HoTen, QuocTich from Vandongvien vdv join Thamgia tg on vdv.MaVDV = tg.MaVDV 
+				join Noidungthi ndt on ndt.MaNDT = tg.MaNDT
+				Where TenNDT = '100m boi ngua')
+	Intersect 
+(select HoTen, QuocTich from Vandongvien vdv join Thamgia tg on vdv.MaVDV = tg.MaVDV 
+				join Noidungthi ndt on ndt.MaNDT = tg.MaNDT
+				Where TenNDT = '200m tu do')
+
+e) select vdv.MaVDV, HoTen from Vandongvien vdv
+	where GioiTinh = 'Nu' and QuocTich = 'UK' and not exists(select * from Thevanhoi tvh
+				where Nam >= 2008 not exists(select * from Thamgia tg
+							where tg.MaVDV = vdv.MaVDV 
+							and tg.MaTVH = tvh.MaTVH))
+select .... from <Bảng cần show>
+	where not exists(select * from <Bảng còn lại>
+				where not exists(select * from <Bảng trung gian>
+							where))
+f) select vdv.MaVDV, HoTen from Vandongvien vdv, Thevanhoi tvh, Thamgia tg 
+	where TenTVH = 'Olympic Rio 2016' and HuyChuong = 1 and ..... 
+		group by vdv.MaVDV, HoTen having count(*) >= 2
+
+2.1)
+(CG)+ = CG
+(CG)+ = CGD(f3)
+(CG)+ = CGDBE(f6)
+(CG)+ = CGDBEH(f4)
+-> (CG)+ = CGDBEH
+E thuộc (CG)+ => CG -> E thuộc F+
+A không thuộc (CG)+ => CG -> A không thuộc F+
+Vậy CG -> AE không thuộc F+
+
+2.2)
+N = {A}
+D = {B, G, H}
+TG = {C, D, E}
+Giả sử X = {A}:
+X+ = A != Q+
+Vậy X không phải khóa của Q
+Giả sử X = (N U TGi)
+(AC)+ = ACDGBEH(Do f3, f1, f4, f5, f6)
+Vậy AC là khóa của Q
+(AD)+ = ADCGBEH(Do f1, f6, f4)
+Vậy AD là khóa của Q
+(AE)+ = AEBH(Do f2)
+Vậy AE không là khóa của Q
+Loại ACD, ACE, ADE, ACDE vì có chứa AC hoặc AD
+Vậy Q có 2 khóa là AC và AD
+
+Xét khóa AC:
+Ta có: C -> D
+mà C thuộc khóa AC, D là một thuộc tính không thuộc khóa
+Vậy D phụ thuộc không hoàn toàn vào khóa
+=> Quan hệ (Q, F) không đạt dạng chuẩn 2
+
+
+
+ĐỀ 2:
+--Bối cảnh: Thevanhoi
+--Nội dung:
+V tvh thuộc Thevanhoi 
+!E tvh2 thuộc Thevanhoi: (tvh2.Nam = tvh.Nam - 4 v tvh2.Nam = tvh.Nam + 4)
+			^ tvh2.MaQG = tvh.MaQG
+
+	    	 Thêm      Xóa     Sửa
+Thevanhoi     +        -       +(MaQG, Nam)  
+
+a)
+Select HoTen, NgSinh
+From Vandongvien
+Where GioiTinh = 'Nu' and QuocTich = 'JA'
+
+b) 
+Select *
+From Vandongvien vdv, Thamgia tg, Noidungthi ndt, Thevanhoi tvh
+Where TenNDT = 'Dien kinh' and TenTVH = 'Olympic Rio 2016'
+	^ vdv.MaVDV = tg.MaVDV
+	^ ndt.MaNDT = tg.MaNDT
+	^ tvh.MaTVH = tg.MaTVH
+
+c)
+Select count(HuyChuong)
+From vdv, tg, tvh
+Where Quoctich = 'Trung Quoc' ^ HuyChuong = 2
+
+d)
+select HoTen, QuocTich from Vandongvien vdv, Thamgia tg, Noidungthi ndt 
+where ..... and TenNDT = '100m boi ngua' and not exists (select HoTen, QuocTich from Vandongvien vdv, Thamgia tg, Noidungthi ndt where ..... and TenNDT = '200m tu do' )
+
+
+e) 
+select MaVDV, Hoten from Vandongvien vdv
+where Gioitinh = 'Nam' and Quoctich = 'DE' and not exists(select * from Thevanhoi tvh
+			where Nam >= 2012 not exists (select * from Thamgia tg
+						where tg.MaVDV = vdv.MaVDV and tg.MaTVH = tvh.MaTVH ))
+
+f)
+select vdv.MaVDV, HoTen 
+from ..... vdv, tg, ndt
+where TenNDT = 'Ban cung' and Huychuong = 1
+Group by vdv.MaVDV, HoTen
+Having count(Huychuong) >= 2
+
+
+Câu 2
+2.1
+(BE)+ = BE
+(BE)+ = BEG (vì f3)
+(BE)+ = BEGAH (f6)
+(BE)+ = BEGAHC(f4)
+=> (BE)+ = ABCEGH
+A e (BE)+ => BE -> A e F+
+D e/ (BE)+ => BE -> D e/ F+
+Vậy BE -> AC e F+
+
+2.2
+Tập Nguồn N = {D}
+Tập trung gian TG = {A, G, E}
+Tập đích Đ = {B, C, H}
+
+Giả sử X = N = {D}
+D+ = D != Q+
+Vậy D không phải khóa của Q
+
+Giả sử X = (N U TGi)
+(AD)+ = ADCH != Q+ => AD ko là khóa của Q
+(GD)+ = DGBEAHC = Q+ => DG là khóa của Q . Loại ADG, EDG, ADEG
+(ED)+ = EDGAHCB = Q+ => ED là khóa của Q. Loại ADE
+Vậy Q có 2 khóa là DG và DE
+
+Xét khóa DE
+Có f3: E -> G
+Mà E e khóa DE, G là một thuộc tính không thuộc khóa DE
+Vậy G phụ thuộc không hoàn toàn vào khóa
+=> ldqh (Q,F) k đạt dạng chuẩn 2
+
+
+
+
+
+
+
+
+
